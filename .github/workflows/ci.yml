@@ -56,7 +56,7 @@ jobs:
       # Build a Docker image
       - name: Build Docker Image
         run: |
-          docker build -t your-dockerhub-username/frontend-nginx:latest -f Dockerfile .
+          docker build -t knutekje/frontend:latest -f Dockerfile .
 
       # Log in to DockerHub
       - name: Log in to DockerHub
@@ -73,5 +73,5 @@ jobs:
       # Test the Docker image (optional)
       - name: Test Deployment
         run: |
-          docker run -d -p 80:80 knutekje/frontend-nginx:latest
+          docker run -d -p 80:80 knutekje/frontend:latest
           curl -I http://localhost | grep "200 OK"
