@@ -68,10 +68,10 @@ jobs:
       # Push the Docker image to DockerHub
       - name: Push Docker Image
         run: |
-          docker push your-dockerhub-username/frontend-nginx:latest
+          docker push knutekje/frontend-nginx:latest
 
       # Test the Docker image (optional)
       - name: Test Deployment
         run: |
-          docker run -d -p 80:80 your-dockerhub-username/frontend-nginx:latest
+          docker run -d -p 80:80 knutekje/frontend-nginx:latest
           curl -I http://localhost | grep "200 OK"
