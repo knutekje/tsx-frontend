@@ -1,0 +1,66 @@
+name: Build and Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Build the React-Vite app
+      - name: Build App
+        run: npm run build
+
+      # Archive build artifacts
+      - name: Archive Production Files
+        uses: actions/upload-artifact@v3
+        with:
+          name: production-build
+          path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Download build artifacts from the previous job
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: production-build
+
+      # Copy build files to an Nginx container
+      - name: Deploy to Nginx
+        run: |
+          docker run --name frontend-nginx -d -p 80:80 nginx
+          docker cp dist/. frontend-nginx:/usr/share/nginx/html
+          docker exec frontend-nginx nginx -s reload
+
+      # Test the deployment (optional)
+      - name: Test Deployment
+        run: |
+          curl -I http://localhost | grep "200 OK"
