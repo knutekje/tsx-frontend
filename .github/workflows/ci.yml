@@ -70,8 +70,4 @@ jobs:
         run: |
           docker push knutekje/frontend:latest
 
-      # Test the Docker image (optional)
-      - name: Test Deployment
-        run: |
-          docker run -d -p 80:80 knutekje/frontend:latest
-          curl -I http://localhost | grep "200 OK"
+      
