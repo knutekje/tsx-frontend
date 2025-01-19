@@ -68,7 +68,7 @@ jobs:
       # Push the Docker image to DockerHub
       - name: Push Docker Image
         run: |
-          docker push knutekje/frontend-nginx:latest
+          docker push knutekje/frontend:latest
 
       # Test the Docker image (optional)
       - name: Test Deployment
